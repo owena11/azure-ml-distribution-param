@@ -1,0 +1,21 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+
+# Name of the experiment where all jobs will end up in the Azure ML dashboard
+name: dummy-component
+display_name: dummy-component
+
+# What to run
+command: >-
+  python -c "import sys; print(sys.version)"
+
+environment:
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu20.04
+  conda_file: ./environment.yaml
+
+distribution:
+  type: mpi 
+  process_count_per_instance: 2
+
+resources:
+  instance_count: 1

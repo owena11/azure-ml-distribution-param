@@ -1,0 +1,37 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineComponent.schema.json
+type: pipeline
+
+name: train_pipeline_component
+display_name: train_pipeline_component
+description: The pipeline component for training a model at several scales of training.
+
+# This needs to change to match the values that need to be configured across pipelines.
+inputs:
+  #
+  # Runtime configuration
+  #
+  compute_type:
+    type: string
+    default: "A100x4"
+  num_machines:
+    type: integer
+    default: 1
+  num_processes:
+    type: integer
+    default: 4
+
+# We believe this is the same for the pipeline and pipeline component.
+jobs:
+  train:
+    type: command
+    component: ./component/azure-ml-component.yaml
+    compute: ${{parent.inputs.compute_type}}
+    inputs:
+      #
+      # Runtime configuration
+      #
+      num_machine: ${{parent.inputs.num_machine}}
+      num_processes: ${{parent.inputs.num_processes}}
+    distribution:
+      type: mpi
+      process_count_per_instance: ${{parent.inputs.num_processes}}

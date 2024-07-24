@@ -1,0 +1,16 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+type: pipeline
+
+experiment_name: num-processes-bug
+
+# These are values that we want users to be able to override at the command line
+jobs:
+  train_pipeline:
+    type: pipeline
+    component: ./train_val_pipeline_component.yaml
+    inputs:
+      #
+      # Runtime configuration
+      #
+      compute_type: "A100x4"
+      num_processes: 6
